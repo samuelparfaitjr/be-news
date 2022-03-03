@@ -1,1 +1,1 @@
-## BE NC NEWS
+## BE NEWS API
