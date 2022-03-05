@@ -1,6 +1,10 @@
 const express = require("express");
-const res = require("express/lib/response");
 const api = require("./controllers/index");
+const {
+  errorHandler,
+  clientErrorHandler,
+  serverErrorHandler,
+} = require("./error");
 
 const app = express();
 
@@ -17,5 +21,9 @@ app.get("/api/users", getUsers);
 app.all("/*", (req, res) => {
   res.status(404).send({ message: "404 Not Found" });
 });
+
+app.use(errorHandler);
+app.use(clientErrorHandler);
+app.use(serverErrorHandler);
 
 module.exports = app;

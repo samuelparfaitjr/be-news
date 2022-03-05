@@ -17,7 +17,6 @@ describe("API", () => {
           .then(({ body: { endpoints } }) => {
             expect(endpoints).toBeInstanceOf(Array);
             endpoints.forEach((endpoint) => {
-              console.log(endpoint);
               expect(Object.keys(endpoint)).toEqual([
                 "method",
                 "path",
@@ -31,7 +30,7 @@ describe("API", () => {
     });
     describe("Topics", () => {
       describe("/api/topics", () => {
-        test("should return status 200 and an array of topics with keys `slug`, `description`", () => {
+        test("should return status 200 and an array of topics", () => {
           return request(app)
             .get("/api/topics")
             .expect(200)
@@ -40,13 +39,17 @@ describe("API", () => {
               topics.forEach((topic) => {
                 expect(Object.keys(topic)).toEqual(["slug", "description"]);
               });
+              expect(topics[0]).toEqual({
+                slug: "mitch",
+                description: "The man, the Mitch, the legend",
+              });
             });
         });
       });
     });
     describe("Articles", () => {
       describe("/api/articles", () => {
-        test("should return status 200 and an array of articles with keys `article_id`, `title`,`topic`, `author`,`body`, `created_at`, `votes`", () => {
+        test("should return status 200 and an array of articles", () => {
           return request(app)
             .get("/api/articles")
             .expect(200)
@@ -90,6 +93,34 @@ describe("API", () => {
                 "created_at",
                 "votes",
               ]);
+            });
+        });
+      });
+      describe("/api/articles/:article_id/comments", () => {
+        test("should return status 200 and an array of comments", () => {
+          return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              expect(comments).toHaveLength(11);
+              expect(comments[0]).toEqual({
+                comment_id: 2,
+                body: "The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.",
+                article_id: 1,
+                author: "butter_bridge",
+                votes: 14,
+                created_at: "2020-10-31T03:03:00.000Z",
+              });
+              comments.forEach(comment => {
+                expect(Object.keys(comment)).toEqual([
+                  "comment_id",
+                  "body",
+                  "article_id",
+                  "author",
+                  "votes",
+                  "created_at",
+                ]);
+              })
             });
         });
       });

@@ -7,11 +7,10 @@ exports.fetchArticles = async () => {
 };
 
 exports.fetchArticleById = async (article_id) => {
-  const {
-    rows: [article],
-  } = await db.query("SELECT * FROM articles WHERE article_id = $1;", [
-    article_id,
-  ]);
+  const { rows: [article] } = await db.query(
+    "SELECT * FROM articles WHERE article_id = $1;",
+    [article_id]
+  );
   if (rows.length === 0) {
     return Promise.reject({ status: 404, message: "Article Not Found" });
   } else {
@@ -34,7 +33,5 @@ exports.checkArticleExists = async (article_id) => {
   );
   if (rows.length === 0) {
     return Promise.reject({ status: 404, message: "Article Not Found" });
-  } else {
-    return { rowCount: rows.length };
   }
 };
