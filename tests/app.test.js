@@ -66,24 +66,7 @@ describe("API", () => {
             });
         });
       });
-      describe("/api/articles", () => {
-        test("should return status 200 and an array of users with keys `username`, `name`,`avatar_url`", () => {
-          return request(app)
-            .get("/api/users")
-            .expect(200)
-            .then(({ body: { users } }) => {
-              expect(users).toBeInstanceOf(Array);
-              users.forEach((user) => {
-                expect(Object.keys(user)).toEqual([
-                  "username",
-                  "name",
-                  "avatar_url",
-                ]);
-              });
-            });
-        });
-      });
-      describe("/api/articles/1", () => {
+      describe("/api/articles/:article_id", () => {
         test("should return status 200 and an article object", () => {
           return request(app)
             .get("/api/articles/1")
@@ -107,6 +90,25 @@ describe("API", () => {
                 "created_at",
                 "votes",
               ]);
+            });
+        });
+      });
+    });
+    describe("Users", () => {
+      describe("/api/users", () => {
+        test("should return status 200 and an array of users with keys `username`, `name`,`avatar_url`", () => {
+          return request(app)
+            .get("/api/users")
+            .expect(200)
+            .then(({ body: { users } }) => {
+              expect(users).toBeInstanceOf(Array);
+              users.forEach((user) => {
+                expect(Object.keys(user)).toEqual([
+                  "username",
+                  "name",
+                  "avatar_url",
+                ]);
+              });
             });
         });
       });

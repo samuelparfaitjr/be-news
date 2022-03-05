@@ -27,5 +27,15 @@ module.exports = getArticleById = (req, res, next) => {
 };
 
 module.exports = getArticleComments = (req, res, next) => {
-  return true;
+  const { article_id } = req.params;
+  Promise.all([
+    checkArticleExists(article_id),
+    fetchArticleComments(article_id),
+  ])
+    .then(([rowCount, data]) => {
+      res.status(200).send({ comments: data });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };

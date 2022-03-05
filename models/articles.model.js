@@ -1,6 +1,5 @@
 const { rows } = require("pg/lib/defaults");
 const db = require("../db/connection");
-const { indexOf } = require("../endpoints");
 
 exports.fetchArticles = async () => {
   const { rows } = await db.query("SELECT * FROM articles;");
@@ -18,6 +17,14 @@ exports.fetchArticleById = async (article_id) => {
   } else {
     return article;
   }
+};
+
+exports.fetchArticleComments = async (article_id) => {
+  const { rows } = await db.query(
+    "SELECT * FROM comments WHERE article_id = $1",
+    [article_id]
+  );
+  return rows;
 };
 
 exports.checkArticleExists = async (article_id) => {
