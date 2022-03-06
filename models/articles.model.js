@@ -2,28 +2,24 @@ const { rows } = require("pg/lib/defaults");
 const db = require("../db/connection");
 
 exports.fetchArticles = async () => {
-  const { rows } = await db.query("SELECT * FROM articles;");
+  const query = `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.body, articles.created_at, articles.votes,
+COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id;`;
+  const { rows } = await db.query(query);
   return rows;
 };
 
 exports.fetchArticleById = async (article_id) => {
+  const query = `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.created_at, articles.votes,
+COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id
+WHERE articles.article_id = $1 GROUP BY articles.article_id;`;
   const {
     rows: [article],
-  } = await db.query("SELECT * FROM articles WHERE article_id = $1;", [
-    article_id,
-  ]);
-  const {
-    rows: [{ count }],
-  } = await db.query("SELECT COUNT(*) FROM comments WHERE article_id = $1;", [
-    article_id,
-  ]);
+  } = await db.query(query, [article_id]);
+
   if (rows.length === 0) {
     return Promise.reject({ status: 404, message: "Article Not Found" });
   } else {
-    const articleObj = { ...article };
-    articleObj["comment_count"] = +count;
-    console.log(articleObj);
-    return articleObj;
+    return article;
   }
 };
 
