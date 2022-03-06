@@ -6,6 +6,8 @@ const {
 } = require("../models/articles.model");
 
 module.exports = getArticles = (req, res, next) => {
+  const query = req.query;
+  console.log(query);
   fetchArticles()
     .then((data) => {
       res.status(200).send({ articles: data });

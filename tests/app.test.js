@@ -64,6 +64,7 @@ describe("API", () => {
                   "body",
                   "created_at",
                   "votes",
+                  "comment_count",
                 ]);
               });
             });
@@ -75,17 +76,8 @@ describe("API", () => {
             .get("/api/articles/1")
             .expect(200)
             .then(({ body: article }) => {
-              expect(article).toEqual({
-                article_id: 1,
-                title: "Living in the shadow of a great man",
-                topic: "mitch",
-                author: "butter_bridge",
-                body: "I find this existence challenging",
-                created_at: "2020-07-09T20:11:00.000Z",
-                votes: 100,
-                comment_count: 11,
-              });
-              console.log(Object.keys(article));
+              console.log(article);
+              expect(+article.comment_count).toBe(11);
               expect(Object.keys(article)).toEqual([
                 "article_id",
                 "title",

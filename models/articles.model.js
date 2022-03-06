@@ -3,13 +3,13 @@ const db = require("../db/connection");
 
 exports.fetchArticles = async () => {
   const query = `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.body, articles.created_at, articles.votes,
-COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id;`;
+COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY articles.created_at DESC;`;
   const { rows } = await db.query(query);
   return rows;
 };
 
 exports.fetchArticleById = async (article_id) => {
-  const query = `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.created_at, articles.votes,
+  const query = `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.body, articles.created_at, articles.votes,
 COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id
 WHERE articles.article_id = $1 GROUP BY articles.article_id;`;
   const {
