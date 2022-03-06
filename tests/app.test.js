@@ -83,7 +83,9 @@ describe("API", () => {
                 body: "I find this existence challenging",
                 created_at: "2020-07-09T20:11:00.000Z",
                 votes: 100,
+                comment_count: 11,
               });
+              console.log(Object.keys(article));
               expect(Object.keys(article)).toEqual([
                 "article_id",
                 "title",
@@ -92,6 +94,7 @@ describe("API", () => {
                 "body",
                 "created_at",
                 "votes",
+                "comment_count",
               ]);
             });
         });
@@ -111,7 +114,7 @@ describe("API", () => {
                 votes: 14,
                 created_at: "2020-10-31T03:03:00.000Z",
               });
-              comments.forEach(comment => {
+              comments.forEach((comment) => {
                 expect(Object.keys(comment)).toEqual([
                   "comment_id",
                   "body",
@@ -120,7 +123,7 @@ describe("API", () => {
                   "votes",
                   "created_at",
                 ]);
-              })
+              });
             });
         });
       });
@@ -132,7 +135,12 @@ describe("API", () => {
             .get("/api/users")
             .expect(200)
             .then(({ body: { users } }) => {
-              expect(users).toBeInstanceOf(Array);
+              expect(users[0]).toEqual({
+                username: "butter_bridge",
+                name: "jonny",
+                avatar_url:
+                  "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+              });
               users.forEach((user) => {
                 expect(Object.keys(user)).toEqual([
                   "username",
