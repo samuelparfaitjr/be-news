@@ -1,6 +1,8 @@
 const {
   fetchComments,
   deleteCommentById,
+  checkCommentExists,
+  fetchCommentById,
 } = require("../models/comments.model");
 
 module.exports = getComments = (req, res, next) => {
@@ -13,12 +15,23 @@ module.exports = getComments = (req, res, next) => {
     });
 };
 
+module.exports = getCommentById = (req, res, next) => {
+  const { comment_id } = req.params;
+  Promise.all([checkCommentExists(comment_id), fetchCommentById(comment_id)])
+    .then(([rowCount, comment]) => {
+      res.status(200).send(comment);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
 module.exports = removeCommentById = (req, res, next) => {
   const { comment_id } = req.params;
-  console.log(comment_id);
-  deleteCommentById(comment_id)
-    .then((result) => {
-      res.status(200).send(result);
+
+  Promise.all([checkCommentExists(comment_id), deleteCommentById(comment_id)])
+    .then(([rowCount, comment]) => {
+      res.status(204).send(comment);
     })
     .catch((err) => {
       next(err);

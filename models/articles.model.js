@@ -1,26 +1,55 @@
 const db = require("../db/connection");
 
-exports.fetchArticles = async (sort_by, order, topic) => {
-  const sort = sort_by === undefined ? "created_at" : sort_by;
-  const option = order === undefined ? "DESC" : order.toUpperCase();
-  let result;
-
+exports.fetchArticles = async (sort_by, order, topic, author) => {
+  let options = [];
   let query = `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.body, articles.created_at, articles.votes,
-COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY articles.${sort} ${option};`;
+COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id`;
 
-  let queryByTopic = `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.body, articles.created_at, articles.votes,
-COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id WHERE articles.topic = $1 GROUP BY articles.article_id ORDER BY articles.${sort} ${option};`;
-
-  if (topic === undefined) {
-    result = await db.query(query);
-  } else {
-    result = await db.query(queryByTopic, [topic]);
+  if (topic !== undefined) {
+    options.push(topic);
+    query += ` WHERE topic = $1`;
   }
 
-  if (result.rows.length === 0) {
-    return Promise.reject({ status: 404, message: "Topic Not Found" });
+  if (author !== undefined) {
+    if (options.length) {
+      query += ` AND`;
+    } else {
+      query += ` WHERE`;
+    }
+    options.push(author);
+    query += ` articles.author = $${options.length}`;
+  }
+
+  if (sort_by === undefined) {
+    sort_by = "created_at";
+  } else if (
+    ![
+      "article_id",
+      "title",
+      "topic",
+      "author",
+      "created_at",
+      "votes",
+      "comment_count",
+    ].includes(sort_by)
+  ) {
+    return Promise.reject({ status: 400, message: "Invalid Sort Query" });
+  }
+
+  if (order === undefined) {
+    order = "desc";
+  } else if (!["asc", "desc"].includes(order)) {
+    return Promise.reject({ status: 400, message: "Invalid Order Query" });
+  }
+
+  query += ` GROUP BY articles.article_id ORDER BY articles.${sort_by} ${order};`;
+
+  const results = await db.query(query, options);
+
+  if (results.rows.length === 0) {
+    return Promise.reject({ status: 404, message: "Article Not Found" });
   } else {
-    return result.rows;
+    return results.rows;
   }
 };
 
@@ -28,14 +57,12 @@ exports.fetchArticleById = async (article_id) => {
   let query = `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.body, articles.created_at, articles.votes,
 COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id
 WHERE articles.article_id = $1 GROUP BY articles.article_id;`;
-  const {
-    rows: [article],
-  } = await db.query(query, [article_id]);
+  const { rows } = await db.query(query, [article_id]);
 
   if (rows.length === 0) {
     return Promise.reject({ status: 404, message: "Article Not Found" });
   } else {
-    return article;
+    return rows[0];
   }
 };
 
@@ -54,6 +81,8 @@ exports.checkArticleExists = async (article_id) => {
   );
   if (rows.length === 0) {
     return Promise.reject({ status: 404, message: "Article Not Found" });
+  } else {
+    return { rowCount: rows.length };
   }
 };
 
@@ -72,4 +101,3 @@ exports.updateArticle = async (article_id, inc_votes) => {
   );
   return rows;
 };
-

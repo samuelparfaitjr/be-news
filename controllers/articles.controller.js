@@ -8,8 +8,8 @@ const {
 } = require("../models/articles.model");
 
 module.exports = getArticles = (req, res, next) => {
-  const { sort_by, order, topic } = req.query;
-  fetchArticles(sort_by, order, topic)
+  const { sort_by, order, topic, author } = req.query;
+  fetchArticles(sort_by, order, topic, author)
     .then((data) => {
       res.status(200).send({ articles: data });
     })
@@ -73,4 +73,3 @@ module.exports = patchArticle = (req, res, next) => {
       next(err);
     });
 };
-
