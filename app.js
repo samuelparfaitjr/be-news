@@ -17,10 +17,13 @@ app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles/:article_id/comments", getArticleComments);
 app.get("/api/users", getUsers);
+app.get("/api/comments", getComments);
 
 app.post("/api/articles/:article_id/comments", postArticleComment);
 
 app.patch("/api/articles/:article_id", patchArticle);
+
+app.delete("api/comments/:comment_id", removeCommentById);
 
 app.all("/*", (req, res) => {
   res.status(404).send({ message: "404 Not Found" });

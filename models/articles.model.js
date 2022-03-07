@@ -1,6 +1,4 @@
-const { rows, user } = require("pg/lib/defaults");
 const db = require("../db/connection");
-const { sort } = require("../db/data/test-data/articles");
 
 exports.fetchArticles = async (sort_by, order, topic) => {
   const sort = sort_by === undefined ? "created_at" : sort_by;
@@ -74,3 +72,4 @@ exports.updateArticle = async (article_id, inc_votes) => {
   );
   return rows;
 };
+
