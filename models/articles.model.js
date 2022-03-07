@@ -60,10 +60,17 @@ exports.checkArticleExists = async (article_id) => {
 };
 
 exports.insertArticleComment = async (body, article_id, username) => {
-  console.log(username);
   const { rows } = await db.query(
     `INSERT INTO comments (body, article_id, author) VALUES ($1, $2, $3) RETURNING *;`,
     [body, article_id, username]
   );
   return rows[0];
+};
+
+exports.updateArticle = async (article_id, inc_votes) => {
+  const { rows } = await db.query(
+    `UPDATE articles SET votes = (votes + $2) WHERE article_id = $1 RETURNING *;`,
+    [article_id, inc_votes]
+  );
+  return rows;
 };

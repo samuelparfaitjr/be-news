@@ -20,6 +20,8 @@ app.get("/api/users", getUsers);
 
 app.post("/api/articles/:article_id/comments", postArticleComment);
 
+app.patch("/api/articles/:article_id", patchArticle);
+
 app.all("/*", (req, res) => {
   res.status(404).send({ message: "404 Not Found" });
 });

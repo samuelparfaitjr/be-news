@@ -4,6 +4,7 @@ const {
   fetchArticleComments,
   checkArticleExists,
   insertArticleComment,
+  updateArticle,
 } = require("../models/articles.model");
 
 module.exports = getArticles = (req, res, next) => {
@@ -48,6 +49,22 @@ module.exports = postArticleComment = (req, res, next) => {
   Promise.all([
     checkArticleExists(article_id),
     insertArticleComment(body, article_id, username),
+  ])
+    .then(([rowCount, results]) => {
+      res.status(200).send(results);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+module.exports = patchArticle = (req, res, next) => {
+  const { article_id } = req.params;
+  const { inc_votes } = req.body;
+
+  Promise.all([
+    checkArticleExists(article_id),
+    updateArticle(article_id, inc_votes),
   ])
     .then(([rowCount, results]) => {
       res.status(200).send(results);

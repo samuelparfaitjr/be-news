@@ -10,7 +10,7 @@ beforeAll(() => seed(data));
 describe("API", () => {
   describe("Method: GET", () => {
     describe("/api", () => {
-      test("should return a JSON describing all the available endpoints", () => {
+      test("should return status 200 and a JSON describing all the available endpoints", () => {
         request(app)
           .get("/api")
           .expect(200)
@@ -69,7 +69,7 @@ describe("API", () => {
               });
             });
         });
-        test("should return articles sorted by column", () => {
+        test("should return status 200 and articles sorted by column", () => {
           return request(app)
             .get("/api/articles?sort_by=article_id")
             .expect(200)
@@ -77,7 +77,7 @@ describe("API", () => {
               expect(articles[0].article_id).toBe(12);
             });
         });
-        test("should return articles order by query string value", () => {
+        test("should return status 200 and articles order by query string value", () => {
           return request(app)
             .get("/api/articles?sort_by=article_id&order=asc")
             .expect(200)
@@ -85,7 +85,7 @@ describe("API", () => {
               expect(articles[0].article_id).toBe(1);
             });
         });
-        test("should return articles by topic", () => {
+        test("should return status 200 and articles by topic", () => {
           return request(app)
             .get("/api/articles?sort_by=article_id&order=asc&topic=mitch")
             .expect(200)
@@ -101,7 +101,6 @@ describe("API", () => {
             .get("/api/articles/1")
             .expect(200)
             .then(({ body: article }) => {
-              console.log(article);
               expect(+article.comment_count).toBe(11);
               expect(Object.keys(article)).toEqual([
                 "article_id",
@@ -167,6 +166,44 @@ describe("API", () => {
               });
             });
         });
+      });
+    });
+  });
+  describe("Method: POST", () => {
+    test("should return status 200 and an object of posted comment", () => {
+      const data = { username: "icellusedkars", body: "the quick brown fox" };
+      return request(app)
+        .post("/api/articles/1/comments")
+        .send(data)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.body).toBe("the quick brown fox");
+          expect(body.author).toBe("icellusedkars");
+          expect(body.votes).toBe(0);
+        });
+    });
+    describe("Method: PATCH", () => {
+      test("should return status 200 and an article object with the incremented votes", () => {
+        const newVote = { inc_votes: 10 };
+        return request(app)
+          .patch("/api/articles/1")
+          .send(newVote)
+          .expect(200)
+          .then(({ body: [article] }) => {
+            expect(article.votes).toBe(110);
+          });
+      });
+      test("should return status 200 and an article object with the decrements votes", () => {
+        const newVote = { inc_votes: -5 };
+        return request(app)
+          .patch("/api/articles/1")
+          .send(newVote)
+          .expect(200)
+          .then(({ body: [article] }) => {
+            console.log(typeof newVote.inc_votes);
+            console.log(article);
+            expect(article.votes).toBe(105);
+          });
       });
     });
   });
