@@ -4,10 +4,12 @@
   "description": "bc-nc-news",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
     "test": "jest",
-    "dev": "nodemon ./server.js"
+    "dev": "nodemon ./server.js",
+    "seed:prod": "NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL) npm run seed"
   },
   "repository": {
     "type": "git",
