@@ -18,12 +18,14 @@ app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles/:article_id/comments", getArticleComments);
 app.get("/api/users", getUsers);
 
+app.post("/api/articles/:article_id/comments", postArticleComment);
+
 app.all("/*", (req, res) => {
   res.status(404).send({ message: "404 Not Found" });
 });
 
 app.use(errorHandler);
-app.use(clientErrorHandler);
-app.use(serverErrorHandler);
+// app.use(clientErrorHandler);
+// app.use(serverErrorHandler);
 
 module.exports = app;

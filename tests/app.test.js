@@ -69,6 +69,31 @@ describe("API", () => {
               });
             });
         });
+        test("should return articles sorted by column", () => {
+          return request(app)
+            .get("/api/articles?sort_by=article_id")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles[0].article_id).toBe(12);
+            });
+        });
+        test("should return articles order by query string value", () => {
+          return request(app)
+            .get("/api/articles?sort_by=article_id&order=asc")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles[0].article_id).toBe(1);
+            });
+        });
+        test("should return articles by topic", () => {
+          return request(app)
+            .get("/api/articles?sort_by=article_id&order=asc&topic=mitch")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles[0].topic).toBe("mitch");
+              expect(articles).toHaveLength(11);
+            });
+        });
       });
       describe("/api/articles/:article_id", () => {
         test("should return status 200 and an article object", () => {

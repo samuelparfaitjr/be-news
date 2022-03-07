@@ -56,12 +56,12 @@ const seed = async ({ topicData, userData, articleData, commentData }) => {
   const formattedCommentData = formatComments(commentData, articleIdLookup);
 
   const insertCommentsQueryStr = format(
-    "INSERT INTO comments (body, author, article_id, votes, created_at) VALUES %L RETURNING *;",
+    "INSERT INTO comments (body, article_id, author, votes, created_at) VALUES %L RETURNING *;",
     formattedCommentData.map(
-      ({ body, author, article_id, votes = 0, created_at }) => [
+      ({ body, article_id, author, votes = 0, created_at }) => [
         body,
-        author,
         article_id,
+        author,
         votes,
         created_at,
       ]

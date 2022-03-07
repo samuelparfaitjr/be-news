@@ -3,12 +3,12 @@ const {
   fetchArticleById,
   fetchArticleComments,
   checkArticleExists,
+  insertArticleComment,
 } = require("../models/articles.model");
 
 module.exports = getArticles = (req, res, next) => {
-  const query = req.query;
-  console.log(query);
-  fetchArticles()
+  const { sort_by, order, topic } = req.query;
+  fetchArticles(sort_by, order, topic)
     .then((data) => {
       res.status(200).send({ articles: data });
     })
@@ -36,6 +36,21 @@ module.exports = getArticleComments = (req, res, next) => {
   ])
     .then(([rowCount, data]) => {
       res.status(200).send({ comments: data });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+module.exports = postArticleComment = (req, res, next) => {
+  const { username, body } = req.body;
+  const { article_id } = req.params;
+  Promise.all([
+    checkArticleExists(article_id),
+    insertArticleComment(body, article_id, username),
+  ])
+    .then(([rowCount, results]) => {
+      res.status(200).send(results);
     })
     .catch((err) => {
       next(err);
