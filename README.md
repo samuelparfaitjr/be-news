@@ -23,13 +23,13 @@ The BE News API provides a method of requesting fictional news articles filterab
 
 ## Articles Query Parameters
 
-| Parameters | Type   | Default | Description                                                                                                          |
-| :--------- | ------ | ------- | -------------------------------------------------------------------------------------------------------------------- |
-| sort_by    | string | date    | sorts articles by the following accepted values `article_id, title, topic, author, created_at, votes, comment_count` |
-
-|order | string | desc | sorts articles in ascending or descending order `asc, desc`|
-|topic | string | all | filters articles by available topics. _eg. 'food'_. returns all articles if no values is given|
-|author|string|all| filters articles by authors. _eg. 'grumpy19'_. returns all articles if no values is given|
+| Parameters | Type   | Default | Description                                                                                                                      |
+| :--------- | ------ | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| sort_by    | string | date    | sorts articles by the following accepted values `article_id`, `title`, `topic`, `author`, `created_at`, `votes`, `comment_count` |
+| :--------- | ------ | ------- |
+| order      | string | desc    | sorts articles in ascending or descending order `asc, desc`                                                                      |
+| topic      | string | all     | filters articles by available topics. _eg. 'food'_. returns all articles if no values is given                                   |
+| author     | string | all     | filters articles by authors. _eg. 'grumpy19'_. returns all articles if no values is given                                        |
 
 ## Sample Date Output
 

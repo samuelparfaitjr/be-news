@@ -1,5 +1,6 @@
 const express = require("express");
 const api = require("./controllers/index");
+const cors = require("cors");
 const {
   errorHandler,
   clientErrorHandler,
@@ -7,6 +8,8 @@ const {
 } = require("./error");
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,6 +38,6 @@ app.all("/*", (req, res) => {
 
 app.use(errorHandler);
 app.use(clientErrorHandler);
-// app.use(serverErrorHandler);
+app.use(serverErrorHandler);
 
 module.exports = app;
