@@ -1,7 +1,9 @@
 const db = require("../db/connection");
 
 exports.fetchComments = async () => {
-  const { rows } = await db.query("SELECT * FROM comments;");
+  const { rows } = await db.query(
+    "SELECT * FROM comments ORDER BY created_at DESC;"
+  );
   if (rows.length === 0) {
     return Promise.reject({ status: 404, message: "There are no comments" });
   } else {
