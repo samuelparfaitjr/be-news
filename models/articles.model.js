@@ -68,7 +68,7 @@ WHERE articles.article_id = $1 GROUP BY articles.article_id;`;
 
 exports.fetchArticleComments = async (article_id) => {
   const { rows } = await db.query(
-    "SELECT * FROM comments WHERE article_id = $1;",
+    "SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC;",
     [article_id]
   );
   return rows;
