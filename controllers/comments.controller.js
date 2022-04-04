@@ -29,8 +29,8 @@ module.exports = getCommentById = (req, res, next) => {
 module.exports = removeCommentById = (req, res, next) => {
   const { comment_id } = req.params;
 
-  Promise.all([checkCommentExists(comment_id), deleteCommentById(comment_id)])
-    .then(([rowCount, comment]) => {
+  deleteCommentById(comment_id)
+    .then((comment) => {
       res.status(204).send(comment);
     })
     .catch((err) => {
