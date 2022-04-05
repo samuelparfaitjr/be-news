@@ -18,6 +18,7 @@ describe("BE News API", () => {
           endpoints.forEach((endpoint) => {
             expect(Object.keys(endpoint)).toEqual([
               "method",
+              "status",
               "path",
               "description",
               "queries",
@@ -101,15 +102,8 @@ describe("BE News API", () => {
         .get("/api/articles/1/comments")
         .expect(200)
         .then(({ body: { comments } }) => {
+          console.log(comments);
           expect(comments).toHaveLength(11);
-          expect(comments[0]).toEqual({
-            comment_id: 2,
-            body: "The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.",
-            article_id: 1,
-            author: "butter_bridge",
-            votes: 14,
-            created_at: "2020-10-31T03:03:00.000Z",
-          });
           comments.forEach((comment) => {
             expect(Object.keys(comment)).toEqual([
               "comment_id",
