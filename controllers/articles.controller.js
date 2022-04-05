@@ -44,14 +44,11 @@ module.exports = getArticleComments = (req, res, next) => {
     });
 };
 
-module.exports = postArticleComment = (req, res, next) => {
+module.exports = postComment = (req, res, next) => {
   const { username, body } = req.body;
   const { article_id } = req.params;
-  Promise.all([
-    checkArticleExists(article_id),
-    insertArticleComment(body, article_id, username),
-  ])
-    .then(([rowCount, results]) => {
+  insertArticleComment(body, article_id, username)
+    .then((results) => {
       res.status(200).send(results);
     })
     .catch((err) => {
