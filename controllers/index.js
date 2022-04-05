@@ -5,6 +5,7 @@ exports.getArticleById = require("./articles.controller");
 exports.getArticleComments = require("./articles.controller");
 exports.getUsers = require("./users.controller");
 exports.postArticleComment = require("./articles.controller");
+exports.createArticle = require("./articles.controller");
 exports.patchArticle = require("./articles.controller");
 exports.removeCommentById = require("./comments.controller");
 exports.getCommentById = require("./comments.controller");

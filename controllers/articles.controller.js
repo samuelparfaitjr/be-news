@@ -4,6 +4,7 @@ const {
   fetchArticleComments,
   checkArticleExists,
   insertArticleComment,
+  insertArticle,
   updateArticle,
 } = require("../models/articles.model");
 
@@ -51,6 +52,17 @@ module.exports = postArticleComment = (req, res, next) => {
     insertArticleComment(body, article_id, username),
   ])
     .then(([rowCount, results]) => {
+      res.status(200).send(results);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+module.exports = createPost = (req, res, next) => {
+  const { title, topic, author, body } = req.body;
+  insertArticle(title, topic, author, body)
+    .then((results) => {
       res.status(200).send(results);
     })
     .catch((err) => {

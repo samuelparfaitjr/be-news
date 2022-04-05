@@ -94,6 +94,14 @@ exports.insertArticleComment = async (body, article_id, username) => {
   return rows[0];
 };
 
+exports.insertArticle = async (title, topic, author, body) => {
+  const { rows } = await db.query(
+    `INSERT INTO articles (title, topic, author, body) VALUES ($1, $2, $3, $4) RETURNING *;`,
+    [title, topic, author, body]
+  );
+  return rows[0];
+};
+
 exports.updateArticle = async (article_id, inc_votes) => {
   const { rows } = await db.query(
     `UPDATE articles SET votes = (votes + $2) WHERE article_id = $1 RETURNING *;`,

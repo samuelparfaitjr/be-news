@@ -26,6 +26,7 @@ app.get("/api/users", getUsers);
 app.get("/api/comments", getComments);
 app.get("/api/comments/:comment_id", getCommentById);
 
+app.post("/api/articles", createPost);
 app.post("/api/articles/:article_id/comments", postArticleComment);
 
 app.patch("/api/articles/:article_id", patchArticle);
@@ -38,6 +39,6 @@ app.all("/*", (req, res) => {
 
 app.use(errorHandler);
 app.use(clientErrorHandler);
-// app.use(serverErrorHandler);
+app.use(serverErrorHandler);
 
 module.exports = app;
