@@ -40,6 +40,6 @@ app.all("/*", (req, res) => {
 
 app.use(errorHandler);
 app.use(clientErrorHandler);
-// app.use(serverErrorHandler);
+app.use(serverErrorHandler);
 
 module.exports = app;
