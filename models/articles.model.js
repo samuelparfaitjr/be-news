@@ -109,3 +109,11 @@ exports.updateArticle = async (article_id, inc_votes) => {
   );
   return rows;
 };
+
+exports.dropArticle = async (article_id) => {
+  const { rows } = await db.query(
+    "DELETE FROM articles WHERE article_id = $1 RETURNING *;",
+    [article_id]
+  );
+  return rows[0];
+};

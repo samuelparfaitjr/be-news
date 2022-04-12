@@ -102,7 +102,6 @@ describe("BE News API", () => {
         .get("/api/articles/1/comments")
         .expect(200)
         .then(({ body: { comments } }) => {
-          console.log(comments);
           expect(comments).toHaveLength(11);
           comments.forEach((comment) => {
             expect(Object.keys(comment)).toEqual([

@@ -6,6 +6,7 @@ const {
   insertArticleComment,
   insertArticle,
   updateArticle,
+  dropArticle,
 } = require("../models/articles.model");
 
 module.exports = getArticles = (req, res, next) => {
@@ -77,6 +78,19 @@ module.exports = patchArticle = (req, res, next) => {
   ])
     .then(([rowCount, results]) => {
       res.status(200).send(results);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+module.exports = deleteArticle = (req, res, next) => {
+  const { article_id } = req.params;
+
+  dropArticle(article_id)
+    .then((article) => {
+      console.log(article);
+      res.status(204).send(article);
     })
     .catch((err) => {
       next(err);

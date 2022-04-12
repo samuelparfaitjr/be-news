@@ -9,3 +9,4 @@ exports.createArticle = require("./articles.controller");
 exports.patchArticle = require("./articles.controller");
 exports.removeCommentById = require("./comments.controller");
 exports.getCommentById = require("./comments.controller");
+exports.deleteArticle = require("./articles.controller");

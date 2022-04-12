@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.status(200).send({ message: "BE News API, Hosted on Heroku" });
+  res.status(200).send({ message: "News API powered by NodeJS, Express and PostgreSQL" });
 });
 app.get("/api", getEndpoints);
 app.get("/api/topics", getTopics);
@@ -32,6 +32,7 @@ app.post("/api/articles/:article_id/comments", postComment);
 app.patch("/api/articles/:article_id", patchArticle);
 
 app.delete("/api/comments/:comment_id", removeCommentById);
+app.delete('/api/articles/:article_id', deleteArticle);
 
 app.all("/*", (req, res) => {
   res.status(404).send({ message: "404 Not Found" });
@@ -39,6 +40,6 @@ app.all("/*", (req, res) => {
 
 app.use(errorHandler);
 app.use(clientErrorHandler);
-app.use(serverErrorHandler);
+// app.use(serverErrorHandler);
 
 module.exports = app;

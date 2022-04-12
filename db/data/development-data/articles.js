@@ -202,7 +202,7 @@ module.exports = [
     votes: 0,
   },
   {
-    title: "HOW COOKING HAS CHANGED US",
+    title: "How Cooking Has Changed Us",
     topic: "cooking",
     author: "weegembump",
     body: "In a cave in South Africa, archaeologists have unearthed the remains of a million-year-old campfire, and discovered tiny bits of animal bones and ash from plants. It’s the oldest evidence of our ancient human ancestors—probably Homo erectus, a species that preceded ours—cooking a meal.",
@@ -226,7 +226,7 @@ module.exports = [
     votes: 0,
   },
   {
-    title: "A BRIEF HISTORY OF FOOD—NO BIG DEAL",
+    title: "A Brief History Of Food",
     topic: "cooking",
     author: "tickle122",
     body: "n 1686, the croissant was invented in Austria. That's a fun fact I'd probably never had known or maybe don't even really need to know, but now I do, thanks to Julia Rothman's Food Anatomy: The Curious Parts & Pieces of Our Edible World. Rothman has an entire series of illustrated Anatomy books, including Nature and Farm, packed with infographics, quirky facts, and maps that you can get lost in for hours—in a fun way, not in a boring textbook way. It makes you wonder why textbooks aren't this fun to read. Can someone look into this? Thanks.",
