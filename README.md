@@ -1,179 +1,96 @@
-# BE News API
+# Be-News
+[![Be-News](https://be-news-api.herokuapp.com/?app=be-news-api)]
 
-### Version: 1.0 (2022 March)
+The Be-News REST API provides a method of requesting fictional news articles filterable by topics, date and popularity (votes).
 
-## Description
+I've built a small blog using this API. You can check it out [here](https://shiny-cocada-dea6ac.netlify.app)
 
-The BE News API provides a method of requesting fictional news articles filterable by topics and/or authors.
+## Versions
+**Be News API**: 1.0.0</br>
+**Node**: 17.8.0</br>
+**postgresSQL**: 14.2
+
+# Installation
+**1 -  Clone the repository**
+```
+git clone https://github.com/wakenado/be-news.git
+```
+**2 - Install dependencies**
+``` 
+npm install 
+```
+## Setup Test and Development database
+Run the following command in your root directory
+```bash
+echo 'PGDATABASE=nc_news' > .env.development
+echo 'PGDATABASE=nc_news_test' > .env.test
+```
+
+## Create the databases
+```
+npm run setup-dbs
+npm run seed
+npm run start
+```
+The server will be running on port 9090 (http://localhost:9090/api)
 
 ## Available Endpoints
 
-- GET "/"
-- GET "/api"
-- GET "/api/topics"
-- GET "/api/articles"
-- GET "/api/articles/:article_id"
-- GET "/api/articles/:article_id/comments"
-- GET "/api/users"
-- GET "/api/comments"
-- GET "/api/comments/:comment_id"
-- POST "/api/articles/:article_id/comments"
-- PATCH "/api/articles/:article_id"
-- DELETE "/api/comments/:comment_id"
-
-## Articles Query Parameters
-
-| Parameters | Type   | Default | Description                                                                                                                      |
-| :--------- | ------ | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| sort_by    | string | date    | sorts articles by the following accepted values `article_id`, `title`, `topic`, `author`, `created_at`, `votes`, `comment_count` |
-| :--------- | ------ | ------- |
-| order      | string | desc    | sorts articles in ascending or descending order `asc, desc`                                                                      |
-| topic      | string | all     | filters articles by available topics. _eg. 'food'_. returns all articles if no values is given                                   |
-| author     | string | all     | filters articles by authors. _eg. 'grumpy19'_. returns all articles if no values is given                                        |
-
-## Sample Date Output
-
-### GET
-
-`/api/articles?sort_by=title&order=desc&topic=football&author=tickle122`
-
-```"articles": [
-		{
-			"article_id": 20,
-			"title": "History of Football",
-			"topic": "football",
-			"author": "tickle122",
-			"body": "It may come as a surprise to many, but football has a long and interesting history; sources suggest that the sport was first introduced in England as early as 1170 when an account describes youths going to the fields for a ‘game of ball’. Aspects of the game can even be traced back to as early as the second and third century BC in China. Sources taken from military manuals at the time describe an exercise called Tsu’ Chu, in which opponents used a leather ball filled with feathers and hair. The aim was to get the ball into a small net fixed on to bamboo canes while also defending themselves from attacks. Variations of the game are also documented in Egyptian and Greek society, proving that the sport has a long tradition throughout history.",
-			"created_at": "2020-03-10T21:05:00.000Z",
-			"votes": 0,
-			"comment_count": "5"
-		},
+```
+GET /articles
+GET /articles/:article_id
+GET /articles/:article_id/comments
+GET /topics
+GET /users
+GET /articles/:username
+GET /comments
+GET /comments/:comment_id
+POST /articles
+POST /articles/article_id/comments
+PATCH /articles/article_id 
+PATCH /comments/:comment_id
+DELETE /articles/:article_id
+DELETE /articles/:article_id/comments
 ```
 
-### GET /api/articles
-
-```articles: [
-        {
-          article_id: 34,
-          title: "The Notorious MSG’s Unlikely Formula For Success",
-          topic: "cooking",
-          author: "grumpy19",
-          body: "The quick brown fox jumps over the lazy dog.",
-          created_at: "2020-11-22T11:13:00.000Z",
-          votes: 0,
-          comment_count: "11",
-        },
-      ],
+## Examples
+Updating an article vote count using the **PATCH** method
+```
+{ "inc_votes": 2 }
 ```
 
-### GET /api/articles
-
-```articles: [
-        {
-          article_id: 34,
-          title: "The Notorious MSG’s Unlikely Formula For Success",
-          topic: "cooking",
-          author: "grumpy19",
-          body: "The quick brown fox jumps over the lazy dog.",
-          created_at: "2020-11-22T11:13:00.000Z",
-          votes: 0,
-          comment_count: "11",
-        },
-      ],
+Adding an article using the **POST** method
+```
+{ 
+    "title": "Oven Baked Potatoes",
+    "topic": "cooking",
+    "author": "tickle122",
+    "body": "Lorem ipsum dolor sit amet, consectetu."
+}
 ```
 
-### GET /api/articles
-
-```articles: [
-        {
-          article_id: 34,
-          title: "The Notorious MSG’s Unlikely Formula For Success",
-          topic: "cooking",
-          author: "grumpy19",
-          body: "The quick brown fox jumps over the lazy dog.",
-          created_at: "2020-11-22T11:13:00.000Z",
-          votes: 0,
-          comment_count: "11",
-        },
-      ],
+Posting a comment on an article using the **POST** method
+```
+{
+	"username": "tickle122",
+	"body": "A new comment by me"
+}
 ```
 
-### GET /api/articles
-
-```articles: [
-        {
-          article_id: 34,
-          title: "The Notorious MSG’s Unlikely Formula For Success",
-          topic: "cooking",
-          author: "grumpy19",
-          body: "The quick brown fox jumps over the lazy dog.",
-          created_at: "2020-11-22T11:13:00.000Z",
-          votes: 0,
-          comment_count: "11",
-        },
-      ],
+## Error Handling
+```
+- 200 - OK
+- 404 - Not Found
+- 400 - Bad Request
+- 500 - Internal Server Error
 ```
 
-### GET /api/articles
+## Get in touch
+Feel free to send me an email at [samuelparfaitjr@gmail.com](mailto:samuelparfaitjr@gmail.com)
 
-```articles: [
-        {
-          article_id: 34,
-          title: "The Notorious MSG’s Unlikely Formula For Success",
-          topic: "cooking",
-          author: "grumpy19",
-          body: "The quick brown fox jumps over the lazy dog.",
-          created_at: "2020-11-22T11:13:00.000Z",
-          votes: 0,
-          comment_count: "11",
-        },
-      ],
-```
 
-### GET /api/articles
 
-```articles: [
-        {
-          article_id: 34,
-          title: "The Notorious MSG’s Unlikely Formula For Success",
-          topic: "cooking",
-          author: "grumpy19",
-          body: "The quick brown fox jumps over the lazy dog.",
-          created_at: "2020-11-22T11:13:00.000Z",
-          votes: 0,
-          comment_count: "11",
-        },
-      ],
-```
 
-### GET /api/articles
 
-```articles: [
-        {
-          article_id: 34,
-          title: "The Notorious MSG’s Unlikely Formula For Success",
-          topic: "cooking",
-          author: "grumpy19",
-          body: "The quick brown fox jumps over the lazy dog.",
-          created_at: "2020-11-22T11:13:00.000Z",
-          votes: 0,
-          comment_count: "11",
-        },
-      ],
-```
 
-### GET /api/articles
 
-```articles: [
-        {
-          article_id: 34,
-          title: "The Notorious MSG’s Unlikely Formula For Success",
-          topic: "cooking",
-          author: "grumpy19",
-          body: "The quick brown fox jumps over the lazy dog.",
-          created_at: "2020-11-22T11:13:00.000Z",
-          votes: 0,
-          comment_count: "11",
-        },
-      ],
-```
