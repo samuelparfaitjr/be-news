@@ -1,5 +1,4 @@
 # Be-News
-[![Be-News](https://be-news-api.herokuapp.com/?app=be-news-api)]
 
 The Be-News REST API provides a method of requesting fictional news articles filterable by topics, date and popularity (votes).
 
@@ -85,8 +84,12 @@ Posting a comment on an article using the **POST** method
 - 500 - Internal Server Error
 ```
 
-## Get in touch
-Feel free to send me an email at [samuelparfaitjr@gmail.com](mailto:samuelparfaitjr@gmail.com)
+## Run Tests
+```
+npm i -D jest
+npm i -D supertest
+npm t
+```
 
 
 
