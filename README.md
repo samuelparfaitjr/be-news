@@ -84,12 +84,6 @@ Posting a comment on an article using the **POST** method
 - 500 - Internal Server Error
 ```
 
-## Run Tests
-```
-npm i -D jest
-npm i -D supertest
-npm t
-```
 
 
 
